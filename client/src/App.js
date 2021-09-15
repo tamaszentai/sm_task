@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import UserModal from "./components/UserModal";
+import UserCard from "./components/UserCard";
 import "./App.css";
 
 function App() {
@@ -10,6 +11,14 @@ function App() {
   const [userName, setUserName] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("Female");
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/users")
+    .then(res => {
+        console.log(res.data);
+        setUsers(res.data)
+      });
+},[])  
 
   const userNameChangeHandler = (event) => {
     const inputName = event.target.value;
@@ -50,7 +59,9 @@ function App() {
 
   return (
     <div className="App">
+      <br />
       <h1>User management interface</h1>
+      <br />
       <UserModal
         buttonLabel={"Add New User"}
         userName={userName}
@@ -61,6 +72,9 @@ function App() {
         genderChangeHandler={genderChangeHandler}
         addNewUserHandler={addNewUserHandler}
       />
+      <br />
+      {users && (users.map((user) => <UserCard key={user._id} name={user.name} dob={user.dob} gender={user.gender}/>
+      ))}
     </div>
   );
 }

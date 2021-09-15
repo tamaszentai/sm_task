@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
-    res.json(users);
+    res.send(users);
   } catch (error) {
     res.json({ message: error });
   }
@@ -21,6 +21,15 @@ router.post("/", async (req, res) => {
   try {
     const savedUser = await user.save();
     res.send(savedUser);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const removedUser = await User.remove({ _id: req.params.id });
+    res.send(removedUser);
   } catch (error) {
     res.json({ message: error });
   }
