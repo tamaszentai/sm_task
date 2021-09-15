@@ -1,5 +1,3 @@
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-
 import React, { useState } from "react";
 import {
   Button,
@@ -16,11 +14,9 @@ import {
 const UserEditModal = (props) => {
   const { buttonLabel, className, id, name, dob, gender, updateUserHandler } = props;
 
-  const modifiedDob = dob.split("T");
-
   const [modal, setModal] = useState(false);
   const [newName, setNewName] = useState(name);
-  const [newDob, setNewDob] = useState(modifiedDob[0]);
+  const [newDob, setNewDob] = useState(dob);
   const [newGender, setNewGender] = useState(gender);
 
   const toggle = () => setModal(!modal);
