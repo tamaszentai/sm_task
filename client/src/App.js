@@ -13,27 +13,26 @@ function App() {
   const [gender, setGender] = useState("Female");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/users")
-    .then(res => {
-        console.log(res.data);
-        setUsers(res.data)
-      });
-},[])  
+    axios.get("http://localhost:5000/users").then((res) => {
+      console.log(res.data);
+      setUsers(res.data);
+    });
+  }, []);
 
   const userNameChangeHandler = (event) => {
     const inputName = event.target.value;
     setUserName(inputName);
-  }
+  };
 
   const dobChangeHandler = (event) => {
     const inputDob = event.target.value;
     setDob(inputDob);
-  }
+  };
 
   const genderChangeHandler = (event) => {
     const inputGender = event.target.value;
     setGender(inputGender);
-  }
+  };
 
   const addNewUserHandler = () => {
     let newUser;
@@ -41,21 +40,29 @@ function App() {
       newUser = {
         name: userName,
         dob: dob,
-        gender: gender 
-      }
+        gender: gender,
+      };
     } else {
-      alert("Please fill all fields!")
-      return
+      alert("Please fill all fields!");
+      return;
     }
-    axios.post("http://localhost:5000/users", newUser)
-    .then(res => {
-      const tempUsers = [...users]
-      setUsers([...tempUsers, res.data])
+    axios.post("http://localhost:5000/users", newUser).then((res) => {
+      const tempUsers = [...users];
+      setUsers([...tempUsers, res.data]);
+    });
+    setUserName("");
+    setDob("");
+    setGender("Female");
+  };
+
+  const deleteUserHandler = (id) => {
+    axios.delete(`http://localhost:5000/users/${id}`)
+    .then((res) => {if(res.statusText === 'OK') {
+      const filteredArray = users.filter((user) => id !== user._id);
+      setUsers(filteredArray);
+    }
     })
-    setUserName('');
-    setDob('');
-    setGender('Female');
-  }
+  };
 
   return (
     <div className="App">
@@ -73,8 +80,17 @@ function App() {
         addNewUserHandler={addNewUserHandler}
       />
       <br />
-      {users && (users.map((user) => <UserCard key={user._id} name={user.name} dob={user.dob} gender={user.gender}/>
-      ))}
+      {users &&
+        users.map((user) => (
+          <UserCard
+            key={user._id}
+            name={user.name}
+            dob={user.dob}
+            gender={user.gender}
+            id={user._id}
+            deleteUserHandler={deleteUserHandler}
+          />
+        ))}
     </div>
   );
 }

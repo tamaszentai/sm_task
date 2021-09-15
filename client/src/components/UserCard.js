@@ -13,7 +13,7 @@ const UserCard = (props) => {
           <CardTitle tag="h5">{props.name}</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">{props.gender}</CardSubtitle>
           <CardText>{splitDate[0]}</CardText>
-          <Button color="danger">Delete</Button>
+          <Button color="danger" onClick={() => props.deleteUserHandler(props.id)}>Delete</Button>
         </CardBody>
       </Card>
     </div>
