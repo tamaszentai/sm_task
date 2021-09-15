@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
 
   try {
     const savedUser = await user.save();
-    res.json(savedUser);
+    res.send(savedUser);
   } catch (error) {
     res.json({ message: error });
   }
