@@ -1,4 +1,5 @@
 const express = require("express");
+const { Query } = require("mongoose");
 const router = express.Router();
 const User = require("../models/userModel");
 
@@ -10,6 +11,16 @@ router.get("/", async (req, res) => {
     res.json({ message: error });
   }
 });
+
+router.get("/:id", async (req, res) => {
+  try {
+    const users = await User.findById(req.params.id);
+    res.send(users);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 
 router.post("/", async (req, res) => {
   const user = new User({
