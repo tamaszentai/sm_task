@@ -26,9 +26,18 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+ const updatedUser = await User.updateOne({ _id: req.params.id }, { $set: { name: req.body.name, dob: req.body.dob, gender: req.body.gender}})
+  res.send(updatedUser)
+  } catch (error) {
+    res.json({ message: error});
+  }
+})
+
 router.delete("/:id", async (req, res) => {
   try {
-    const removedUser = await User.remove({ _id: req.params.id });
+    const removedUser = await User.deleteOne({ _id: req.params.id });
     res.send(removedUser);
   } catch (error) {
     res.json({ message: error });

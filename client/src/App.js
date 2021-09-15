@@ -55,13 +55,23 @@ function App() {
     setGender("Female");
   };
 
+  const updateUserHandler = (id, updatedUser) => {
+    axios.put(`http://localhost:5000/users/${id}`, updatedUser).then((res) => {
+      if (res.statusText === "OK") {
+        let newUsers = [...users]
+        newUsers = users.map(user => id === user._id ? {...user, ...updatedUser} : user); 
+        setUsers(newUsers);
+       }
+    });
+  };
+
   const deleteUserHandler = (id) => {
-    axios.delete(`http://localhost:5000/users/${id}`)
-    .then((res) => {if(res.statusText === 'OK') {
-      const filteredArray = users.filter((user) => id !== user._id);
-      setUsers(filteredArray);
-    }
-    })
+    axios.delete(`http://localhost:5000/users/${id}`).then((res) => {
+      if (res.statusText === "OK") {
+        const filteredArray = users.filter((user) => id !== user._id);
+        setUsers(filteredArray);
+      }
+    });
   };
 
   return (
@@ -89,6 +99,7 @@ function App() {
             gender={user.gender}
             id={user._id}
             deleteUserHandler={deleteUserHandler}
+            updateUserHandler={updateUserHandler}
           />
         ))}
     </div>
